@@ -1,5 +1,5 @@
 import './App.css'
-import Gun from './components/gun'
+import Gun from './components/Gun.tsx'
 
 function App() {
 
