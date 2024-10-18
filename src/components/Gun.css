@@ -31,6 +31,13 @@
   width: 80vw;
 }
 
+.shots-fired-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
 #cock-button, #reset-button {
   background-color: #4a4a4a; /* Dark grey background for buttons */
   color: white;
@@ -72,4 +79,26 @@ p {
 
 .info-text.shoot {
   color: blue;
+}
+
+
+.small-button {
+  background-color: #4a4a4a; /* Dark grey background for buttons */
+  color: white;
+  border: 2px solid #1a1a1a; /* Dark border for a grimy look */
+  border-radius: 50%; /* Make the button circular */
+  padding: 10px; /* Adjust padding to ensure the button is circular */
+  width: 25px; /* Set a fixed width */
+  height: 25px; /* Set a fixed height */
+  font-size: 16px; /* Font size for small buttons */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.small-button:hover {
+  background-color: #333; /* Darker background on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }

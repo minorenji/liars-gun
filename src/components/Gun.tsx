@@ -30,13 +30,11 @@ const Gun: React.FC = () => {
     const shot = Math.random() < probability;
     setIsShot(shot);
     setIsCocked(false);
-    setShotsFired(shotsFired + 1);
     if (shot) {
       new Audio(gunshotSound).play(); // Play gunshot sound
     } else {
-      const dudAudio = new Audio(dudSound);
-      dudAudio.volume = 0.5; // Set volume to 50%
-      dudAudio.play(); // Play dud sound
+      new Audio(dudSound).play(); // Play dud sound
+      setShotsFired(shotsFired + 1);
       setProbability(1 / (TOTAL_CHAMBERS - shotsFired - 1));
     }
   };
@@ -54,6 +52,20 @@ const Gun: React.FC = () => {
     };
   };
 
+  const handleIncrement = () => {
+    if (shotsFired < TOTAL_CHAMBERS - 1) {
+      setShotsFired(shotsFired + 1);
+      setProbability(1 / (TOTAL_CHAMBERS - shotsFired - 1));
+    }
+  };
+
+  const handleDecrement = () => {
+    if (shotsFired > 0) {
+      setShotsFired(shotsFired - 1);
+      setProbability(1 / (TOTAL_CHAMBERS - shotsFired + 1));
+    }
+  };
+
   const canCock = !isCocking && !isReloading && !isCocked && !isShot && shotsFired < TOTAL_CHAMBERS;
 
   const canReset = shotsFired > 0 && !isCocking && !isCocked;
@@ -68,7 +80,7 @@ const Gun: React.FC = () => {
     } else if (isCocked) {
       return { text: 'Tap anywhere to shoot', className: 'shoot' };
     } else {
-      return { text: `${shotsFired}/${TOTAL_CHAMBERS}`, className: '' };
+      return { text: `${shotsFired}/${TOTAL_CHAMBERS}`, className: 'shots-fired' };
     }
   };
 
@@ -78,26 +90,34 @@ const Gun: React.FC = () => {
     <div className="gun-container" onClick={isCocked ? handleShoot : undefined}>
       <img src={gunImage} alt="Gun" className="gun-image" />
       <div className="controls">
-        <p className={`info-text ${className}`}>{text}</p>
-          <div className="button-group">
-            <button 
-              onClick={handleCock} 
-              id="cock-button"
-              className={!canCock ? 'disabled' : ''}
-              disabled={!canCock}
-            >
-              Cock
-            </button>
-            <button
-              onClick={handleReset}
-              id="reset-button"
-              className={!canReset ? 'disabled' : ''}
-              disabled={!canReset}
-            >
-              Reset
-            </button>
-          </div>
-          
+        <p className={`info-text ${className}`}>
+          {className === 'shots-fired' && (
+            <div className="shots-fired-div">
+              <button onClick={handleDecrement} className="small-button">-</button>
+              {text}
+              <button onClick={handleIncrement} className="small-button">+</button>
+            </div>
+          )}
+          {className !== 'shots-fired' && text}
+        </p>
+        <div className="button-group">
+          <button 
+            onClick={handleCock} 
+            id="cock-button"
+            className={!canCock ? 'disabled' : ''}
+            disabled={!canCock}
+          >
+            Cock
+          </button>
+          <button
+            onClick={handleReset}
+            id="reset-button"
+            className={!canReset ? 'disabled' : ''}
+            disabled={!canReset}
+          >
+            Reset
+          </button>
+        </div>
       </div>
     </div>
   );
